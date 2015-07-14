@@ -1,6 +1,6 @@
 
-#ifndef EXAMPLE_INNER_H
-#define EXAMPLE_INNER_H
+#ifndef EXAMPLE_MIDDLE_H
+#define EXAMPLE_MIDDLE_H
 
 #include <fstream>
 #include <iostream>
@@ -14,17 +14,17 @@ using namespace std;
 
 namespace example {
 
-  class Inner {
+  class Middle {
     public:
-      Inner() {
+      Middle() {
         f1_ = 0;
         f2_ = "none";
       };
-      Inner(int f1, const char* f2) {
+      Middle(int f1, const char* f2) {
         f1_ = f1;
         f2_ = f2;
       }
-      virtual ~Inner() {};
+      virtual ~Middle() {};
 
       int getF1() {
         return f1_;
@@ -42,20 +42,20 @@ namespace example {
         f2_ = v;
       }
 
-      void write(InnerProto::Builder& proto) const {
+      void write(MiddleProto::Builder& proto) const {
         proto.setF1(f1_);
         proto.setF2(f2_);
       }
 
       void write(ofstream& f) const {
         capnp::MallocMessageBuilder message;
-        InnerProto::Builder innerProto = message.initRoot<InnerProto>();
-        write(innerProto);
+        MiddleProto::Builder middleProto = message.initRoot<MiddleProto>();
+        write(middleProto);
         kj::std::StdOutputStream outputStream(f);
         capnp::writeMessage(outputStream, message);
       }
 
-      void read(InnerProto::Reader& proto) {
+      void read(MiddleProto::Reader& proto) {
         f1_ = proto.getF1();
         f2_ = proto.getF2().cStr();
       }
@@ -63,7 +63,7 @@ namespace example {
       void read(ifstream& f) {
         kj::std::StdInputStream inputStream(f);
         capnp::InputStreamMessageReader message(inputStream);
-        InnerProto::Reader proto = message.getRoot<InnerProto>();
+        MiddleProto::Reader proto = message.getRoot<MiddleProto>();
         read(proto);
       }
     private:
@@ -73,4 +73,4 @@ namespace example {
 
 }
 
-#endif // EXAMPLE_INNER_H
+#endif // EXAMPLE_MIDDLE_H

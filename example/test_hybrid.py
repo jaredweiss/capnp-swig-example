@@ -25,9 +25,9 @@ class TestHybrid(unittest.TestCase):
 
       # Validate
       self.assertAlmostEqual(b.fieldA, 3.14159, places=5)
-      inner = b.inner
-      self.assertEqual(inner.getF1(), 17)
-      self.assertEqual(inner.getF2(), "test")
+      middle = b.middle
+      self.assertEqual(middle.getF1(), 17)
+      self.assertEqual(middle.getF2(), "test")
     finally:
       os.remove(path)
 

@@ -2,10 +2,10 @@
 
 struct OuterProto {
   fieldA @0 :Float32;
-  inner @1 :InnerProto;
+  middle @1 :MiddleProto;
 }
 
-struct InnerProto {
+struct MiddleProto {
   f1 @0 :UInt16;
   f2 @1 :Text;
 }

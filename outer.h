@@ -8,7 +8,7 @@
 #include <kj/std/iostream.h>
 #include <iostream>
 
-#include "inner.h"
+#include "middle.h"
 
 using namespace std;
 
@@ -21,8 +21,8 @@ namespace example {
       }
       Outer(float fa, int f1, const char* f2) {
         fieldA_ = fa;
-        inner_.setF1(f1);
-        inner_.setF2(f2);
+        middle_.setF1(f1);
+        middle_.setF2(f2);
       }
       virtual ~Outer() {};
 
@@ -30,14 +30,14 @@ namespace example {
         return fieldA_;
       }
 
-      const Inner& getInner() {
-        return inner_;
+      const Middle& getMiddle() {
+        return middle_;
       }
 
       void write(OuterProto::Builder& proto) const {
         proto.setFieldA(fieldA_);
-        auto innerProto = proto.initInner();
-        inner_.write(innerProto);
+        auto middleProto = proto.initMiddle();
+        middle_.write(middleProto);
       }
 
       void write(ofstream& f) const {
@@ -56,8 +56,8 @@ namespace example {
 
       void read(OuterProto::Reader& proto) {
         fieldA_ = proto.getFieldA();
-        auto innerProto = proto.getInner();
-        inner_.read(innerProto);
+        auto middleProto = proto.getMiddle();
+        middle_.read(middleProto);
       }
 
       void read(ifstream& f) {
@@ -75,7 +75,7 @@ namespace example {
 
     private:
       float fieldA_;
-      Inner inner_;
+      Middle middle_;
   };
 
 }

@@ -8,26 +8,26 @@
 
 #include "proto.capnp.h"
 
-#include "inner.h"
+#include "middle.h"
 #include "outer.h"
 
 %}
 
-%include "inner.h"
+%include "middle.h"
 %include "outer.h"
 
-%extend example::Inner
+%extend example::Middle
 {
 
   inline void write(PyObject* pyBuilder) const
   {
-    InnerProto::Builder innerProto = getBuilder<InnerProto>(pyBuilder);
-    self->write(innerProto);
+    MiddleProto::Builder middleProto = getBuilder<MiddleProto>(pyBuilder);
+    self->write(middleProto);
   }
 
   inline void read(PyObject* pyReader) {
-    InnerProto::Reader innerProto = getReader<InnerProto>(pyReader);
-    self->read(innerProto);
+    MiddleProto::Reader middleProto = getReader<MiddleProto>(pyReader);
+    self->read(middleProto);
   }
 
 }
