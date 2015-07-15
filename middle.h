@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "proto.capnp.h"
+#include "cpp_to_py.h"
 #include <capnp/message.h>
 #include <capnp/serialize.h>
 #include <kj/std/iostream.h>
@@ -17,58 +18,56 @@ namespace example {
   class Middle {
     public:
       Middle() {
-        f1_ = 0;
-        f2_ = "none";
+        mid1_ = 0;
+        mid2_ = "none";
       };
-      Middle(int f1, const char* f2) {
-        f1_ = f1;
-        f2_ = f2;
+      Middle(int mid1, const char* mid2, PyObject* inner) {
+        mid1_ = mid1;
+        mid2_ = mid2;
+        inner_ = inner;
       }
       virtual ~Middle() {};
 
-      int getF1() {
-        return f1_;
+      int getMid1() {
+        return mid1_;
       }
 
-      void setF1(int v) {
-        f1_ = v;
+      void setMid1(int v) {
+        mid1_ = v;
       }
 
-      const char* getF2() {
-        return f2_;
+      const char* getMid2() {
+        return mid2_;
       }
 
-      void setF2(const char* v) {
-        f2_ = v;
+      void setMid2(const char* v) {
+        mid2_ = v;
       }
 
-      void write(MiddleProto::Builder& proto) const {
-        proto.setF1(f1_);
-        proto.setF2(f2_);
+      PyObject* getInner() {
+        return inner_;
       }
 
-      void write(ofstream& f) const {
-        capnp::MallocMessageBuilder message;
-        MiddleProto::Builder middleProto = message.initRoot<MiddleProto>();
-        write(middleProto);
-        kj::std::StdOutputStream outputStream(f);
-        capnp::writeMessage(outputStream, message);
+      void setInner(PyObject* v) {
+        inner_ = v;
       }
 
-      void read(MiddleProto::Reader& proto) {
-        f1_ = proto.getF1();
-        f2_ = proto.getF2().cStr();
+      void write(MiddleProto::Builder& proto, PyObject* parent) const {
+        proto.setMid1(mid1_);
+        proto.setMid2(mid2_);
+        PyObject *builder = create_builder(proto, parent);
       }
 
-      void read(ifstream& f) {
-        kj::std::StdInputStream inputStream(f);
-        capnp::InputStreamMessageReader message(inputStream);
-        MiddleProto::Reader proto = message.getRoot<MiddleProto>();
-        read(proto);
+      void read(MiddleProto::Reader& proto, PyObject* parent) {
+        mid1_ = proto.getMid1();
+        mid2_ = proto.getMid2().cStr();
+        PyObject *reader = create_reader(proto, parent);
       }
+
     private:
-      int f1_;
-      const char* f2_;
+      int mid1_;
+      const char* mid2_;
+      PyObject* inner_;
   };
 
 }
